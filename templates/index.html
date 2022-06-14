@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/index.css') }}">
+    <script src="https://kit.fontawesome.com/a5ee8fc07b.js"></script>
+</head>
+
+
+<body>
+    <nav>
+        <ul class="nav-list">
+            <li class="nav-link">TRACKER</li>
+            <div>
+                <a href="/signout"><button class="add-but" style="margin-right: 1em;background: white;color: #FF4B2B;">Sign Out</button></a>
+            <a href="/addTracker"><button class="add-but">Add Tracker</button></a>
+            </div>
+        </ul>
+    </nav>
+    <div class="home">
+        {% for tracker in trackers_db %}
+        <div class="tracker1" >
+            <img src="" alt="">
+            <p class="tracker-name" onclick="handleClick('{{tracker.id}}')">{{tracker.name}}</p>
+            <p>{{tracker.description}}</p>
+            <div class="icons">
+                <i class='fas fa-edit' onclick="handleEdit('{{tracker.id}}')" style='font-size:24px'></i>
+                <i class='fas fa-trash-alt' onclick="handleDelete('{{tracker.id}}')" style='font-size:24px'></i>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <script>
+        function handleClick(name)
+        {
+            console.log('ok')
+            window.location.href = `/tracker_log/${name}`
+        }
+        function handleEdit(name)
+        {
+            window.location.href = `/tracker_edit/${name}`
+        }
+        function handleDelete(name)
+        {
+            window.location.href = `/tracker_delete/${name}`
+        }
+    </script>
+</body>
+</html>

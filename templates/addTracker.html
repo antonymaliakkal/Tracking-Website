@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{ url_for('static',filename='styles/addTracker.css') }}">
+  <title>Add Tracker</title>
+</head>
+<body>
+  
+  <nav>
+    <ul class="nav-list">
+        <li class="nav-link">
+           <a href='/back' style="color: white; text-decoration: none;"> 
+             TRACKER  
+           </a>
+        </li>
+    </ul>
+  </nav>
+  
+  <div class="add-top">  
+    <div class="add-box">
+      <div class="color-box">
+        <p>
+          Add Tracker
+        </p>
+      </div>
+        {% if edit %}
+        <form action="{{request.path}}" method="post">
+          <label for="name" class="lab-name">Name</label>
+          <input type="text" value="{{tracker.name}}" name="name" id="">
+          <label for="desc" class="lab-desc">Label</label>
+          <input type="text" value="{{tracker.description}}" name="desc" id="">
+          <label for="type" class="lab-type">Type</label>
+          <select name="type" value="{{tracker.datatype}}" id="">
+            <option value="string">String</option>
+            <option value="numerical">Numerical</option>
+            <option value="choice">Multiple Choice</option>
+          </select>
+          <label for="settings" class="lab-settings">Settings</label>
+          <input type="text" value="{{tracker.settings}}" name="choices" id="" placeholder="Choices for multiple choice sep by comma...">
+          <button>Edit Tracker</button>
+        </form>
+        {% else %}
+        <form action="{{request.path}}" method="POST">
+          <label for="name" class="lab-name">Name</label>
+          <input type="text" name="name" id="">
+          <label for="desc" class="lab-desc">Label</label>
+          <input type="text" name="desc" id="">
+          <label for="type" class="lab-type">Type</label>
+          <select name="type" id="">
+            <option value="string">String</option>
+            <option value="numerical">Numerical</option>
+            <option value="choice">Multiple Choice</option>
+          </select>
+          <label for="settings" class="lab-settings">Settings</label>
+          <input type="text" name="choices" id="" placeholder="Choices for multiple choice sep by comma...">
+          <button onclick = "test(type,settings)">Add Tracker</button>
+        </form>
+        {% endif %}
+      
+    </div>
+  </div>
+</body>
+</html>

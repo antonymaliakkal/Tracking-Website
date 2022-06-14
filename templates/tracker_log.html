@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trackers</title>
+  <link rel="stylesheet" href="{{ url_for('static',filename='styles/tracker_log.css') }}">
+  <script src="https://kit.fontawesome.com/a5ee8fc07b.js"></script>
+</head>
+
+<body>
+  
+  <nav>
+    <ul class="nav-list">
+        <li class="nav-link">
+           <a href='/back' style="color: white; text-decoration: none;"> TRACKER  </a>
+        </li>
+        <div>
+        <a href="/signout">
+          <button class="add-but">
+                Sign Out
+          </button>
+        </a>
+        <a href="/addTracker">
+          <button class="add-but">
+            Add Tracker
+          </button>
+        </a>
+        </div>
+    </ul>
+  </nav>
+
+
+  <div class="chart">
+    <div class="chart-card">
+      <img src="{{ url_for('static',filename='graph.png') }}" alt="">
+    </div>
+  </div>
+  <div class="tracker-desc">
+    <div class="tracker-name">
+      <h1>{{tracker.name}}</h1>
+    </div>
+    <div class="tracker-p">
+      <p>{{tracker.description}}</p>
+    </div>
+  </div>
+  <div class="tracker_log">
+    <div class="log-add">
+      {% if edit %}
+      <form action="{{ request.path }}" method="POST">
+        <input type="date" name="date" value="{{log.date}}"  id="">
+        {%if tracker.datatype == 'choice'%}
+          <select name="value" value='{{log.value}}' id="">
+            {%if opts%}
+            {%for opt in opts%}
+              <option value="{{opt}}">{{opt}}</option>
+            {%endfor%}
+            {%endif%}
+          </select>
+        {%else%}
+          <input type="text" name="value" value='{{log.value}}' placeholder="Value">
+        {%endif%}
+        <input type="text" name="note" value='{{log.note}}' placeholder="Note..">
+        <button class="add-but">Edit Log</button>
+        <input type="hidden" name="tracker_name" value="{{tracker.id}}">
+        
+      </form>
+      {% else %}
+      <form action="{{ request.path }}" method="POST">
+        <input type="date" name="date"  id="">
+        {%if tracker.datatype == 'choice'%}
+          <select name="value" id="">
+            {%if opts%}
+            {%for opt in opts%}
+              <option value="{{opt}}">{{opt}}</option>
+            {%endfor%}
+            {%endif%}
+          </select>
+        {%else%}
+          <input type="text" name="value" placeholder="Value">
+        {%endif%}
+        <input type="text" name="note" placeholder="Note..">
+        <button class="add-but">Add Log</button>
+        <input type="hidden" name="tracker_name" value="{{tracker.id}}">
+        
+      </form>
+      {% endif %}
+    </div>
+    <div class="log">
+      <table>
+        <th>S.NO</th>
+        <th>DATE</th>
+        <th>VALUE</th>
+        <th>NOTE</th>
+        <th>EDIT</th>
+        <th>TIME STAMP</th>
+        {% for log in logs %}
+        <tr>
+          <td>{{loop.index}}</td>
+          <td>{{log.date}}</td>
+          <td>{{log.value}}</td>
+          <td>{{log.note}}</td>
+          
+          <td>
+            <i class='fas fa-edit' onclick="handleEdit('{{tracker.id}}','{{log.id}}')" style='font-size:20px'></i>
+            <i class='fas fa-trash-alt' onclick="handleDelete('{{log.id}}','{{tracker.id}}')" style='font-size:20px'></i>
+          </td>
+          <td>{{log.date}}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+    
+  </div>
+  <script>
+    function handleEdit(tckr_id,id){
+      window.location.href = `/tracker_log_edit/${tckr_id}/${id}`
+    }
+    function handleDelete(id,tckr_id){
+      window.location.href = `/tracker_log_delete/${tckr_id}/${id}`
+    }
+  </script>
+</body>
+</html>
